@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Smart Lost & Found</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="dashboard-page">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">🔎</span>
+        <span>Smart L&F</span>
+      </a>
+
+      <nav class="side-nav">
+        <a href="#overview">Overview</a>
+        <a href="#reportForm">Report Item</a>
+        <a href="#itemsSection">Items</a>
+      </nav>
+
+      <div class="session-box">
+        <p id="authStatus">Checking session...</p>
+        <p id="roleStatus">Role: Guest</p>
+        <button class="btn btn-danger full" onclick="logoutUser()">
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <div>
+          <span class="kicker">Dashboard</span>
+          <h1>Smart Lost & Found</h1>
+          <p>Report, search, claim, and manage campus lost and found items.</p>
+        </div>
+
+        <div class="header-actions">
+          <button
+            id="topRefreshBtn"
+            class="btn btn-light"
+            onclick="loadItems(this)"
+          >
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="scrollToForm()">
+            Report Item
+          </button>
+        </div>
+      </header>
+
+      <section id="overview" class="metric-grid">
+        <article class="metric-card">
+          <span>Total</span>
+          <strong id="totalCount">0</strong>
+          <p>Total Items</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="lost-label">Lost</span>
+          <strong id="lostCount">0</strong>
+          <p>Lost Items</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="found-label">Found</span>
+          <strong id="foundCount">0</strong>
+          <p>Found Items</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="claimed-label">Claimed</span>
+          <strong id="claimedCount">0</strong>
+          <p>Claimed Items</p>
+        </article>
+
+        <article class="metric-card">
+          <span class="returned-label">Returned</span>
+          <strong id="returnedCount">0</strong>
+          <p>Returned Items</p>
+        </article>
+      </section>
+
+      <section class="dashboard-card report-section" id="reportForm">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">Report</span>
+            <h2>Report a Lost or Found Item</h2>
+            <p>
+              Upload a clear image so AWS Rekognition can extract AI labels.
+            </p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="title">Item Title</label>
+            <input type="text" id="title" placeholder="Example: Black Wallet" />
+          </div>
+
+          <div class="input-group">
+            <label for="status">Status</label>
+            <select id="status">
+              <option value="Lost">Lost</option>
+              <option value="Found">Found</option>
+            </select>
+          </div>
+
+          <div class="input-group full-width">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              placeholder="Example: Found near the university library"
+            ></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option value="Electronics">Electronics</option>
+              <option value="Wallet">Wallet</option>
+              <option value="Keys">Keys</option>
+              <option value="Bag">Bag</option>
+              <option value="ID/Card">ID/Card</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="priority">Priority</label>
+            <select id="priority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="location">Location</label>
+            <input
+              type="text"
+              id="location"
+              placeholder="Library, Cafeteria, Main Gate"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="contactInfo">Contact Info</label>
+            <input
+              type="text"
+              id="contactInfo"
+              placeholder="Email or phone number"
+            />
+          </div>
+          <div class="input-group full-width">
+            <label for="image">Item Image</label>
+
+            <div class="image-upload-area">
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                onchange="previewSelectedImage(event)"
+              />
+
+              <p>Upload a clear item image for AI analysis.</p>
+            </div>
+
+            <div id="imagePreviewBox" class="image-preview-box">
+              <img id="imagePreview" src="" alt="Selected item preview" />
+              <button
+                type="button"
+                class="remove-image-btn"
+                onclick="removeSelectedImage()"
+              >
+                Remove Image
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          id="submitItemBtn"
+          class="btn btn-primary submit-wide"
+          onclick="addItem(this)"
+        >
+          Submit Item
+        </button>
+      </section>
+
+      <section class="items-section" id="itemsSection">
+        <div class="section-heading row">
+          <div>
+            <span class="kicker">Manage</span>
+            <h2>Reported Items</h2>
+            <p>Search, filter, claim items, or mark returned items as admin.</p>
+          </div>
+          <button
+            id="refreshItemsBtn"
+            class="btn btn-dark"
+            onclick="loadItems(this)"
+          >
+            Refresh Items
+          </button>
+        </div>
+
+        <div class="view-switcher">
+          <button
+            class="view-btn active"
+            data-view="all"
+            onclick="setItemsView('all')"
+          >
+            All Items <span id="allItemsViewCount">0</span>
+          </button>
+
+          <button
+            class="view-btn"
+            data-view="myReports"
+            onclick="setItemsView('myReports')"
+          >
+            My Reports <span id="myReportsViewCount">0</span>
+          </button>
+
+          <button
+            class="view-btn"
+            data-view="myClaims"
+            onclick="setItemsView('myClaims')"
+          >
+            My Claims <span id="myClaimsViewCount">0</span>
+          </button>
+
+          <button
+            class="view-btn admin-only"
+            data-view="adminQueue"
+            onclick="setItemsView('adminQueue')"
+          >
+            Admin Queue <span id="adminQueueViewCount">0</span>
+          </button>
+        </div>
+        <div class="filter-card">
+          <div class="input-group">
+            <label for="searchInput">Search</label>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search title, description, location, category, or AI labels"
+              oninput="renderItems()"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter" onchange="renderItems()">
+              <option value="All">All Status</option>
+              <option value="Lost">Lost</option>
+              <option value="Found">Found</option>
+              <option value="Claimed">Claimed</option>
+              <option value="Returned">Returned</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="items" class="items-grid"></div>
+      </section>
+
+      <div id="claimModal" class="modal-overlay">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div>
+              <h2>Submit Claim Request</h2>
+              <p>Provide your details so the admin can verify your claim.</p>
+            </div>
+
+            <button class="modal-close" onclick="closeClaimModal()">×</button>
+          </div>
+
+          <input type="hidden" id="claimItemId" />
+
+          <div class="input-group">
+            <label for="claimantName">Your Name</label>
+            <input
+              type="text"
+              id="claimantName"
+              placeholder="Example: John Doe"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="claimantContact">Contact Info</label>
+            <input
+              type="text"
+              id="claimantContact"
+              placeholder="Email or phone number"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="claimReason">Claim Reason</label>
+            <textarea
+              id="claimReason"
+              placeholder="Explain why this item is yours. Example: It contains my student ID or I lost it near the library."
+            ></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-light" onclick="closeClaimModal()">
+              Cancel
+            </button>
+            <button
+              id="submitClaimBtn"
+              class="btn btn-primary"
+              onclick="submitClaimFromModal(this)"
+            >
+              Submit Claim
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="returnConfirmModal" class="modal-overlay">
+        <div class="modal-card confirm-modal-card">
+          <div class="modal-header">
+            <div>
+              <h2>Confirm Return</h2>
+              <p>
+                Are you sure you want to mark this item as returned? This action
+                will update the item lifecycle status.
+              </p>
+            </div>
+
+            <button class="modal-close" onclick="closeReturnConfirmModal()">
+              ×
+            </button>
+          </div>
+
+          <input type="hidden" id="returnItemId" />
+
+          <div class="confirm-warning">
+            <strong>Admin action</strong>
+            <p>
+              Only admins can complete this step. The item status will change to
+              Returned.
+            </p>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-light" onclick="closeReturnConfirmModal()">
+              Cancel
+            </button>
+
+            <button
+              id="confirmReturnBtn"
+              class="btn btn-primary"
+              onclick="submitReturnConfirmation(this)"
+            >
+              Mark as Returned
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.15/dist/amazon-cognito-identity.min.js"></script>
+    <script src="app-refactored.js"></script>
+  </body>
+</html>

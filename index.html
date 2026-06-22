@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Lost & Found</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="landing-page">
+    <header class="landing-shell">
+      <nav class="topbar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">🔎</span>
+          <span>Smart Lost & Found</span>
+        </a>
+
+        <div class="topbar-actions">
+          <a href="auth.html" class="nav-link">Sign in</a>
+          <a href="dashboard.html" class="btn btn-dark">Open Dashboard</a>
+        </div>
+      </nav>
+
+      <section class="landing-hero">
+        <div class="hero-copy">
+          <span class="kicker">AWS Cloud Management Final Project</span>
+          <h1>Recover lost items faster with an AI-powered cloud platform.</h1>
+          <p>
+            Students can report lost or found items, upload images, search reports,
+            and claim items. Admins manage returns through a secure AWS serverless backend.
+          </p>
+
+          <div class="hero-actions">
+            <a href="auth.html" class="btn btn-primary">Get Started</a>
+            <a href="dashboard.html" class="btn btn-light">View Dashboard</a>
+          </div>
+
+          <div class="trust-row">
+            <span>Cognito Auth</span>
+            <span>Rekognition AI</span>
+            <span>S3 Storage</span>
+            <span>DynamoDB</span>
+          </div>
+        </div>
+
+        <div class="hero-preview">
+          <div class="preview-card floating-card">
+            <div class="preview-header">
+              <span class="status-dot"></span>
+              <strong>Live Item Report</strong>
+            </div>
+            <h3>Black Wallet</h3>
+            <p>Found near the library entrance.</p>
+            <div class="mini-tags">
+              <span>Found</span>
+              <span>Wallet</span>
+              <span>AI: Accessory</span>
+            </div>
+          </div>
+
+          <div class="architecture-card">
+            <h3>Powered by AWS</h3>
+            <div class="service-cloud">
+              <span>API Gateway</span>
+              <span>Lambda</span>
+              <span>DynamoDB</span>
+              <span>S3</span>
+              <span>Rekognition</span>
+              <span>SNS</span>
+              <span>Cognito</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main class="landing-main">
+      <section class="workflow-strip">
+        <article>
+          <span>01</span>
+          <h3>Sign in</h3>
+          <p>Users register and authenticate using Amazon Cognito.</p>
+        </article>
+
+        <article>
+          <span>02</span>
+          <h3>Report</h3>
+          <p>Submit item details, location, priority, contact info, and image.</p>
+        </article>
+
+        <article>
+          <span>03</span>
+          <h3>Analyze</h3>
+          <p>AWS Rekognition extracts image labels automatically.</p>
+        </article>
+
+        <article>
+          <span>04</span>
+          <h3>Claim & Return</h3>
+          <p>Users claim items while admins mark returned items.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="simple-footer">
+      Smart Lost & Found | AWS Cloud Management Final Project
+    </footer>
+  </body>
+</html>

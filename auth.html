@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Access | Smart Lost & Found</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-visual">
+        <a class="brand auth-brand" href="index.html">
+          <span class="brand-mark">🔎</span>
+          <span>Smart Lost & Found</span>
+        </a>
+
+        <div>
+          <span class="kicker">Secure Access</span>
+          <h1>Sign in to manage lost and found reports.</h1>
+          <p>
+            Regular users can report and claim items. Admin users can also mark
+            items as returned after verification.
+          </p>
+        </div>
+
+        <div class="role-list">
+          <div>
+            <strong>User</strong>
+            <span>Report items, search, and claim.</span>
+          </div>
+          <div>
+            <strong>Admin</strong>
+            <span>Manage claims and mark returned items.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="auth-panel">
+        <div class="auth-tabs">
+          <button class="tab-btn active" onclick="showAuthTab('login')">
+            Login
+          </button>
+          <button class="tab-btn" onclick="showAuthTab('register')">
+            Register
+          </button>
+          <button class="tab-btn" onclick="showAuthTab('confirm')">
+            Confirm
+          </button>
+        </div>
+
+        <div id="loginTab" class="auth-tab active">
+          <h2>Welcome back</h2>
+          <p class="muted">Login using your confirmed Cognito account.</p>
+
+          <div class="input-group">
+            <label for="loginEmail">Email</label>
+            <input
+              id="loginEmail"
+              type="email"
+              placeholder="student@example.com"
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <input
+              id="loginPassword"
+              type="password"
+              placeholder="Enter password"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button class="btn btn-primary full" onclick="loginUser()">
+            Login
+          </button>
+          <p id="authStatus" class="status-text">Not logged in</p>
+          <p id="roleStatus" class="status-text">Role: Guest</p>
+        </div>
+
+        <div id="registerTab" class="auth-tab">
+          <h2>Create account</h2>
+          <p class="muted">
+            Register, then check your email for a confirmation code.
+          </p>
+
+          <div class="input-group">
+            <label for="registerEmail">Email</label>
+            <input
+              id="registerEmail"
+              type="email"
+              placeholder="student@example.com"
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="registerPassword">Password</label>
+            <input
+              id="registerPassword"
+              type="password"
+              placeholder="Create password"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <button class="btn btn-primary full" onclick="registerUser()">
+            Register
+          </button>
+        </div>
+
+        <div id="confirmTab" class="auth-tab">
+          <h2>Confirm account</h2>
+          <p class="muted">
+            Enter the email and confirmation code from Cognito.
+          </p>
+
+          <div class="input-group">
+            <label for="confirmEmail">Email</label>
+            <input
+              id="confirmEmail"
+              type="email"
+              placeholder="student@example.com"
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="confirmCode">Confirmation Code</label>
+            <input id="confirmCode" type="text" placeholder="6-digit code" />
+          </div>
+
+          <button class="btn btn-dark full" onclick="confirmUser()">
+            Confirm Account
+          </button>
+        </div>
+
+        <a class="back-link" href="index.html">← Back to home</a>
+      </section>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.15/dist/amazon-cognito-identity.min.js"></script>
+    <script src="app-refactored.js"></script>
+  </body>
+</html>
