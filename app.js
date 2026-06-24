@@ -597,6 +597,14 @@ ${
 </button>`
                     : ""
                 }
+                    
+                ${
+                  isAdminUser()
+                    ? `<button class="delete-btn" onclick="openDeleteConfirmModal('${item.itemId}', '${item.title || "this item"}')">
+        Delete Item
+      </button>`
+                    : ""
+                }
               </div>
             `
             : ""
@@ -809,6 +817,74 @@ function scrollToForm() {
     window.location.href = "dashboard.html#reportForm";
   }
 }
+function openDeleteConfirmModal(itemId, itemTitle = "this item") {
+  if (!isAdminUser()) {
+    showToast("Access denied", "Only admins can delete items.", "error");
+    return;
+  }
+
+  const modal = getEl("deleteConfirmModal");
+  const deleteItemId = getEl("deleteItemId");
+  const deleteItemTitle = getEl("deleteItemTitle");
+
+  if (!modal || !deleteItemId) {
+    showToast("System error", "Delete confirmation modal not found.", "error");
+    return;
+  }
+
+  deleteItemId.value = itemId;
+
+  if (deleteItemTitle) {
+    deleteItemTitle.innerText = itemTitle;
+  }
+
+  modal.classList.add("show");
+}
+
+function closeDeleteConfirmModal() {
+  const modal = getEl("deleteConfirmModal");
+
+  if (modal) {
+    modal.classList.remove("show");
+  }
+}
+
+async function submitDeleteConfirmation(button) {
+  const itemId = getEl("deleteItemId").value;
+
+  if (!itemId) {
+    showToast("Missing item", "Missing item ID.", "error");
+    return;
+  }
+
+  setButtonLoading(button, true, "Deleting...");
+
+  try {
+    const response = await fetch(`${API_URL}/items/${itemId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("API Error:", data);
+      showToast("Delete failed", JSON.stringify(data), "error");
+      return;
+    }
+
+    closeDeleteConfirmModal();
+
+    showToast("Item deleted", "The item was deleted successfully.", "success");
+
+    loadItems();
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    showToast("Connection failed", "Failed to delete item.", "error");
+  } finally {
+    setButtonLoading(button, false);
+  }
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   updateAuthStatus();
@@ -830,6 +906,16 @@ window.addEventListener("DOMContentLoaded", () => {
     claimModal.addEventListener("click", function (event) {
       if (event.target === claimModal) {
         closeClaimModal();
+      }
+    });
+  }
+
+  const deleteConfirmModal = getEl("deleteConfirmModal");
+
+  if (deleteConfirmModal) {
+    deleteConfirmModal.addEventListener("click", function (event) {
+      if (event.target === deleteConfirmModal) {
+        closeDeleteConfirmModal();
       }
     });
   }

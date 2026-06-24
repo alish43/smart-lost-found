@@ -360,6 +360,48 @@
           </div>
         </div>
       </div>
+      <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="modal-card confirm-modal-card">
+          <div class="modal-header">
+            <div>
+              <h2>Delete Item</h2>
+              <p>
+                This action will permanently delete the item record and its
+                image from the system.
+              </p>
+            </div>
+
+            <button class="modal-close" onclick="closeDeleteConfirmModal()">
+              ×
+            </button>
+          </div>
+
+          <input type="hidden" id="deleteItemId" />
+
+          <div class="danger-warning">
+            <strong>Danger Zone</strong>
+            <p>
+              You are about to delete:
+              <span id="deleteItemTitle">this item</span>
+            </p>
+            <p>This action cannot be undone.</p>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-light" onclick="closeDeleteConfirmModal()">
+              Cancel
+            </button>
+
+            <button
+              id="confirmDeleteBtn"
+              class="btn btn-danger"
+              onclick="submitDeleteConfirmation(this)"
+            >
+              Delete Item
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
 
     <div id="toastContainer" class="toast-container"></div>

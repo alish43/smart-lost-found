@@ -1320,3 +1320,115 @@ select:focus {
   background: rgba(255, 255, 255, 0.22);
   color: white;
 }
+.delete-btn {
+  width: 100%;
+  border: 0;
+  min-height: 44px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  background: #fee2e2;
+  color: #991b1b;
+  transition: 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+  transform: translateY(-2px);
+}
+
+.danger-warning {
+  padding: 16px;
+  border-radius: 18px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  margin-bottom: 20px;
+}
+
+.danger-warning strong {
+  display: block;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+
+.danger-warning p {
+  color: #7f1d1d;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.danger-warning p:last-child {
+  margin-bottom: 0;
+}
+
+.danger-warning span {
+  font-weight: 900;
+}
+
+.delete-btn {
+  width: 100%;
+  border: 0;
+  min-height: 44px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  background: #fee2e2;
+  color: #991b1b;
+  transition: 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+  transform: translateY(-2px);
+}
+
+.danger-warning {
+  padding: 16px;
+  border-radius: 18px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  margin-bottom: 20px;
+}
+
+.danger-warning strong {
+  display: block;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+
+.danger-warning p {
+  color: #7f1d1d;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.danger-warning p:last-child {
+  margin-bottom: 0;
+}
+
+.danger-warning span {
+  font-weight: 900;
+}
+
+/* Fix image cropping in preview and item cards */
+
+.image-preview-box img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  object-position: center;
+  background: #f8fafc;
+  border-radius: 16px;
+  display: block;
+}
+
+.card img {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  object-position: center;
+  background: #f8fafc;
+  padding: 10px;
+  display: block;
+}
